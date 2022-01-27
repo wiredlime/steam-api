@@ -1,5 +1,7 @@
 let loading = false;
 
+const API_KEY = "Your api";
+
 const display = document.querySelector("#display");
 const displayTitle = document.querySelector("#displayTitle");
 const searchInput = document.querySelector("#searchForm");
@@ -19,7 +21,7 @@ const fetchData = async (endpoint, value = " ") => {
       method: "GET",
       headers: {
         "x-rapidapi-host": "steam2.p.rapidapi.com",
-        "x-rapidapi-key": "60b77d80b6msh38935893ac98d64p18f42fjsn3bb96f0430a1",
+        "x-rapidapi-key": API_KEY,
       },
     });
     data = await response.json();
@@ -29,10 +31,6 @@ const fetchData = async (endpoint, value = " ") => {
   } catch (error) {
     renderDisplay(error.msg);
   }
-};
-const appDetail = async (appId) => {
-  const data = await fetchData("appDetail", appId);
-  renderDetail(data);
 };
 
 //Image on click
@@ -79,6 +77,10 @@ const renderDetail = (data) => {
   display.appendChild(newDiv);
 };
 
+const appDetail = async (appId) => {
+  const data = await fetchData("appDetail", appId);
+  renderDetail(data);
+};
 const renderGame = (el) => {
   const newDiv = document.createElement("div");
   newDiv.innerHTML = `<div class="game_wrapper">
