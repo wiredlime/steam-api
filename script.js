@@ -4,7 +4,6 @@ let loading = false;
 //https://answers.netlify.com/t/uncaught-referenceerror-process-is-not-defined-how-to-use-environment-variables-in-html/1726/5
 const API_KEY = "60b77d80b6msh38935893ac98d64p18f42fjsn3bb96f0430a1";
 
-console.log(API_KEY);
 const display = document.querySelector("#display");
 const displayTitle = document.querySelector("#displayTitle");
 const searchInput = document.querySelector("#searchForm");
@@ -28,7 +27,7 @@ const fetchData = async (endpoint, value = " ") => {
       },
     });
     data = await response.json();
-    console.log("done");
+
     loading = false;
     return data;
   } catch (error) {
@@ -102,7 +101,7 @@ const renderGame = (el) => {
 
 const renderDisplay = async (endpoint, value) => {
   const data = await fetchData(endpoint, value);
-  console.log(data);
+
   display.innerHTML = "";
   displayTitle.innerText = value;
   data.map((game) => renderGame(game));
