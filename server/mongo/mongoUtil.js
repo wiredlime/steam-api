@@ -1,14 +1,20 @@
-const { MongoClient } = require("mongodb");
-let _db;
+const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
 
-module.exports = {
-  connectToServer: function (callback) {
-    MongoClient.connect("mongodb://localhost:27017", function (err, client) {
-      _db = client.db("steam");
-      return callback(err);
-    });
+const MONGO_URI = `mongodb://localhost:27017/steam`; //devlopment
+// Connect MongoDB at default port 27017.
+mongoose.connect(
+  MONGO_URI,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   },
-  getDb: function () {
-    return _db;
-  },
-};
+  (err) => {
+    console.log("A");
+    if (!err) {
+      console.log("MongoDB.");
+    } else {
+      console.log("Error in DB connection: " + err);
+    }
+  }
+);

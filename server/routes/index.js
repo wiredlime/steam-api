@@ -1,62 +1,55 @@
 const express = require("express");
-const { set } = require("mongoose");
+const Feature = require("../model/features");
+const Genre = require("../model/genres");
+const Tag = require("../model/steamspy-tags");
 const router = express.Router();
-const mongodbutil = require("../mongo/mongoUtil");
-let db = mongodbutil.getDb();
+const createError = require("http-errors");
+const Game = require("../model/games");
 
 router.get("/", async (req, res, next) => {
   res.send("Welcome to CoderSchool's Steam api");
 });
 
+router.get("/genres", async (req, res, next) => {
+  const data = await Genre.find();
+  res.status(200).send(data[0].list);
+});
+
+router.get("/features", async (req, res, next) => {
+  const data = await Feature.find();
+
+  res.status(200).send(data[0].list);
+});
+
+router.get("/steamspy-tags", async (req, res, next) => {
+  const data = await Tag.find();
+  console.log(data);
+  res.status(200).send(data[0].list);
+});
+
 router.get("/games", async (req, res, next) => {
-  let { page, limit, sortBy, ...filter } = req.query;
-  // process pagination
+  let { page, limit, q, ...filter } = req.query;
+  // const allowed = ["genres", "steamspy-tags", "q"];
+
+  if (q) filter.name = new RegExp(q.toLowerCase().trim().replace(" ", "|"));
+
+  console.log(filter.name);
+
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 10;
 
-  // process filter and search
-  for (const [key, value] of Object.entries(filter)) {
-    if (value) {
-      switch (key) {
-        case "search":
-          filter.name = new RegExp(
-            value
-              .split(" ")
-              .map((e) => {
-                e[0].toUpperCase();
-                return e;
-              })
-              .join("|")
-          );
-          break;
-        case "genres":
-        case "steamspy_tags":
-          filter[key] = value[0].toUpperCase() + value.slice(1);
-          break;
+  const offset = limit * (1 - page);
 
-        default:
-          break;
-      }
-    }
-  }
-
-  console.log(filter);
-  // Query
-  const result = await db
-    .collection("games")
-    .find(filter)
-    .skip(limit * (page - 1))
-    .limit(limit)
-    .toArray();
-
-  const length = result.length;
-
-  res.send({ status: "success", data: result, length });
+  const data = await Game.find(filter).limit(limit).skip(offset);
+  res.status(200).send(data);
 });
-// router.get("/genres", async (req, res, next) => {
-//   const result = await db.collection("genres");
-//   const length = result.length;
-//   res.send({ status: "success", data: result, length });
-// });
+
+router.get("/single-game/:appid", async (req, res, next) => {
+  let { appid } = req.params;
+  console.log(appid);
+  const data = await Game.findOne({ appid });
+  console.log(data);
+  res.status(200).send(data);
+});
 
 module.exports = router;
