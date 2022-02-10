@@ -23,4 +23,5 @@ const schema = mongoose.Schema({
   description: String,
 });
 const Game = mongoose.model("Games", schema);
+
 module.exports = Game;

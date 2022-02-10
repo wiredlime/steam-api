@@ -10,7 +10,6 @@ mongoose.connect(
     useUnifiedTopology: true,
   },
   (err) => {
-    console.log("A");
     if (!err) {
       console.log("MongoDB.");
     } else {
