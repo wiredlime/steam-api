@@ -6,6 +6,8 @@ const Genre = require("../model/genres");
 const Tag = require("../model/steamspy-tags");
 const Game = require("../model/games");
 
+const hideDescription = "-description";
+
 //utils try catch async bad request
 const catchAsync = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch((err) => {
@@ -43,7 +45,7 @@ router.get(
 router.get(
   "/features",
   catchAsync(async (req, res, next) => {
-    const data = await Feature.find().select("name", "appid");
+    const data = await Feature.find().select(hideDescription);
 
     res.status(200).send({ data: data[0].list, total: data[0].list.length });
   })
@@ -73,7 +75,8 @@ router.get(
 
     const data = await Game.find(filter)
       .limit(pagination.limit)
-      .skip(pagination.offset);
+      .skip(pagination.offset)
+      .select(hideDescription);
 
     res.status(200).send({ data, page: pagination.page, total });
   })
