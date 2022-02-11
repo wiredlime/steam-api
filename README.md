@@ -32,4 +32,8 @@ README.md
 
 ## API Server
 
+- [API production](https://cs-steam-api.herokuapp.com/)
 - [API documentation ](https://documenter.getpostman.com/view/14499722/UVeKqQWh)
+
+Database host on @lukehoang MongoAtlas
+API host on @lukehoang Heroku
