@@ -101,7 +101,6 @@ const renderGame = (el) => {
 
 const renderDisplay = async (endpoint, value) => {
   const data = await fetchData(endpoint, value);
-
   display.innerHTML = "";
   displayTitle.innerText = value;
   data.map((game) => renderGame(game));
