@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
 const schema = mongoose.Schema({
-  list: [String],
+  name: String,
+  count: Number,
 });
 const Tag = mongoose.model("Steamspy_tags", schema);
 module.exports = Tag;

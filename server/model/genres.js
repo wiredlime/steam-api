@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
 const schema = mongoose.Schema({
-  list: [String],
+  name: String,
+  count: Number,
 });
 const Genre = mongoose.model("Genres", schema);
 module.exports = Genre;

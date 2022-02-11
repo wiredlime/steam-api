@@ -26,7 +26,10 @@ router.get(
   "/genres",
   catchAsync(async (req, res, next) => {
     const { limit, offset } = paginationInfo(req.query.page, req.query.limit);
-    const data = await Genre.find().skip(offset).limit(limit);
+    let data = await Genre.find();
+    // data.slice(off)
+    //js pagination
+
     res.status(200).send(data[0].list);
   })
 );

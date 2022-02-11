@@ -18,7 +18,7 @@ require("./mongo/mongoUtil");
 
 const indexRouter = require("./routes/index");
 
-require("./jsonToDb");
+// require("./jsonToDb");
 
 app.use("/", indexRouter);
 //catch 404
