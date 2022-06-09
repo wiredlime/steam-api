@@ -56,22 +56,22 @@ const renderDetail = (data) => {
     <div class="game_informations">
     <p>RECENT REVIEWS: ${data.allReviews.summary}</p>
     <p>RELEASE DATE:  ${data.released}</p>
-    <p>DEVELOPER:  <a href="${data.developer.link}">${data.developer.name}</a></p>
-    <p>PUBLISHER:  <a href="${data.publisher.link}">${data.publisher.name}</a></p>
+    <p>DEVELOPER:  <a href="${data.developer.link}">${
+    data.developer.name
+  }</a></p>
+    <p>PUBLISHER:  <a href="${data.publisher.link}">${
+    data.publisher.name
+  }</a></p>
     </div>
     </div>
     </div>
     <div class="tags_contain">
     Popular user-defined tags for this product:
     <div class="tags">
-    <div class="tag"><a href="${data.tags[0].url}">${data.tags[0].name}</a></div>
-    <div class="tag"><a href="${data.tags[1].url}">${data.tags[1].name}</a></div>
-    <div class="tag"><a href="${data.tags[2].url}">${data.tags[2].name}</a></div>
-    <div class="tag"><a href="${data.tags[3].url}">${data.tags[3].name}</a></div>
-    <div class="tag"><a href="${data.tags[4].url}">${data.tags[4].name}</a></div>
-    <div class="tag"><a href="${data.tags[5].url}">${data.tags[5].name}</a></div>
-    <div class="tag"><a href="${data.tags[6].url}">${data.tags[6].name}</a></div>
-    <div class="tag"><a href="${data.tags[7].url}">${data.tags[7].name}</a></div>
+    ${data?.tag
+      ?.map((e) => `<div class="tag"><a href="${e.url}">${e.name}</a></div>`)
+      .join("")}
+    
     </div>
     </div>
     </div>
@@ -103,7 +103,7 @@ const renderDisplay = async (endpoint, value) => {
   const data = await fetchData(endpoint, value);
   display.innerHTML = "";
   displayTitle.innerText = value;
-  data.map((game) => renderGame(game));
+  data?.map((game) => renderGame(game));
 };
 
 //Category click (API search by Category term)

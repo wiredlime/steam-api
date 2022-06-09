@@ -67,6 +67,8 @@ router.get(
 router.get(
   "/games",
   catchAsync(async (req, res, next) => {
+    console.log("this is query", req.query);
+    // console.log(new URL(req.query));
     let { page, limit, q, ...filter } = req.query;
     // | for any in paragraph , i for ignore case
     if (q) filter.name = new RegExp(q.trim().replace(" ", "|"), "i");
@@ -92,5 +94,10 @@ router.get(
     res.status(200).send({ data });
   })
 );
+
+router.post("/post-demo", (req, res, next) => {
+  console.log("this is body", req.body);
+  res.status(200).send("hahah");
+});
 
 module.exports = router;
