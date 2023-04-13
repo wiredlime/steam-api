@@ -1,4 +1,8 @@
 // const catchAsync = require("./catchAsync");
+const mongoose = require("mongoose");
+require("dotenv").config();
+const { MONGO_ATLAS_ACCOUNT, MONGO_ATLAS_PASSWORD } = process.env;
+
 const Feature = require("./model/features");
 const Game = require("./model/games");
 const Genre = require("./model/genres");
@@ -31,6 +35,9 @@ raw.sort((a, b) => {
 
 //each entry of dictionary , create a document in gernes and tag (db)
 (async function () {
+  await mongoose.connect(
+    `mongodb+srv://${MONGO_ATLAS_ACCOUNT}:${MONGO_ATLAS_PASSWORD}@cluster0.ec3yniw.mongodb.net/test`
+  );
   for await (const [key, value] of Object.entries(genres)) {
     const entry = await Genre.create({ name: key, count: value });
     console.log("ok", entry);
@@ -42,10 +49,13 @@ raw.sort((a, b) => {
 })();
 
 // Loop through json add to game collection
-// Promise.all(
-//   raw.map(async (e) => {
-//     console.log("A");
-//     // const exist = await Game.findOne({ appId: e.appId });
-//     await Game.create(e);
-//   })
-// );
+raw.map(async (e) => {
+  await mongoose
+    .connect(
+      `mongodb+srv://${MONGO_ATLAS_ACCOUNT}:${MONGO_ATLAS_PASSWORD}@cluster0.ec3yniw.mongodb.net/test`
+    )
+    .then(() => console.log("Connected DB"))
+    .then(async () => await Game.create(e))
+    .then(console.info)
+    .catch((err) => console.log(err));
+});
